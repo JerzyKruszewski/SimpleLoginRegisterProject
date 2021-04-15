@@ -14,6 +14,6 @@ namespace Login.Web.Data.Model
 
         }
 
-        DbSet<User> Users { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }
