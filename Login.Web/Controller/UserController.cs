@@ -4,10 +4,12 @@ using Login.Web.ViewModels;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Crypto.Digests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Login.Web.Controller
@@ -21,6 +23,25 @@ namespace Login.Web.Controller
         public UserController(LoginDatabaseContext context)
         {
             _context = context;
+        }
+
+        [HttpGet]
+        [Route("Login/{login}/{password}")]
+        public ActionResult<User> Login(string login, string password)
+        {
+            User user = _context.Users.SingleOrDefault(u => u.Login == login);
+
+            if (user == null)
+            {
+                return Problem();
+            }
+
+            if (!ComparePasswords(user.HashedPassword, password))
+            {
+                return NotFound();
+            }
+
+            return Ok(user);
         }
 
         [HttpGet]
@@ -63,20 +84,24 @@ namespace Login.Web.Controller
 
         private string Hash(string password)
         {
-            // generate a 128-bit salt using a secure PRNG
-            byte[] salt = new byte[128 / 8];
-            using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(salt);
-            }
+            Sha3Digest hashAlgorithm = new Sha3Digest(512);
 
-            // derive a 256-bit subkey (use HMACSHA1 with 10,000 iterations)
-            return Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: password,
-                salt: salt,
-                prf: KeyDerivationPrf.HMACSHA1,
-                iterationCount: 10000,
-                numBytesRequested: 256 / 8));
+            // Choose correct encoding based on your usecase
+            byte[] input = Encoding.UTF8.GetBytes(password);
+
+            hashAlgorithm.BlockUpdate(input, 0, input.Length);
+
+            byte[] result = new byte[64]; // 512 / 8 = 64
+            hashAlgorithm.DoFinal(result, 0);
+
+            string hashString = BitConverter.ToString(result);
+
+            return hashString.Replace("-", "").ToLowerInvariant();
+        }
+
+        private bool ComparePasswords(string hashed, string password)
+        {
+            return hashed == Hash(password);
         }
     }
 }

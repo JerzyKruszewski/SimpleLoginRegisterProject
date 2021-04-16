@@ -4,14 +4,16 @@ using Login.Web.Data.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Login.Web.Migrations
 {
     [DbContext(typeof(LoginDatabaseContext))]
-    partial class LoginDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210416080620_AddedSaltAndDataAnnotationsToUserTable")]
+    partial class AddedSaltAndDataAnnotationsToUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,8 +30,8 @@ namespace Login.Web.Migrations
 
                     b.Property<string>("HashedPassword")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(44)
+                        .HasColumnType("nvarchar(44)");
 
                     b.Property<string>("Login")
                         .IsRequired()
@@ -41,6 +43,11 @@ namespace Login.Web.Migrations
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Salt")
+                        .IsRequired()
+                        .HasMaxLength(24)
+                        .HasColumnType("nvarchar(24)");
 
                     b.HasKey("Id");
 
