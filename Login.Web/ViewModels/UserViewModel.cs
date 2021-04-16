@@ -13,7 +13,5 @@ namespace Login.Web.ViewModels
         public string Password { get; set; }
 
         public PermissionType Permissions { get; set; }
-
-        public DateTime RegisterDate { get; set; }
     }
 }

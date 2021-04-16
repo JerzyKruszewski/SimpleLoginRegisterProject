@@ -1,4 +1,6 @@
 using Login.Web.Data.Model;
+using Login.Web.Services;
+using Login.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -26,7 +28,8 @@ namespace Login.Web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<LoginDatabaseContext>(item => item.UseSqlServer(Configuration.GetConnectionString("Database")))
+            services.AddScoped<IUserService, UserService>()
+                .AddDbContext<LoginDatabaseContext>(item => item.UseSqlServer(Configuration.GetConnectionString("Database")))
                 .AddControllers();
         }
 
