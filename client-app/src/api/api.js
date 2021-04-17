@@ -9,7 +9,6 @@ const config = {
   };
 
 const loginRoute = "http://localhost:16560/api/users";
-//axios.default.baseUrl = "http://localhost:16560";
 
 export const login = async (login, password) => {
     try {

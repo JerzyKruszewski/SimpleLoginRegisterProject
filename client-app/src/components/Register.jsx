@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { login, register } from "../api/api.js";
+import { register } from "../api/api.js";
 
 export class Register extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            login: undefined,
+            username: undefined,
             password: undefined,
             confirmPassword: undefined,
             permissions: 0
@@ -20,39 +20,47 @@ export class Register extends Component {
 
     handleLoginChange(event) {
         this.setState(state => {
-            state.login = event.target.value
+            state.login = event.target.value;
         });
     }
 
     handlePasswordChange(event) {
         this.setState(state => {
-            state.password = event.target.value
+            state.password = event.target.value;
         });
     }
 
     handleConfirmChange(event) {
         this.setState(state => {
-            state.confirmPassword = event.target.value
+            state.confirmPassword = event.target.value;
         });
     }
 
     handlePermissionChange(event) {
         this.setState(state => {
-            event.target.value === true ? state.permissions = 1 : state.permissions = 0;
+            state.permissions === 0 ? state.permissions = 1 : state.permissions = 0;
         });
     }
 
-    registerUser() {
+    registerUser(event) {
+        event.preventDefault();
         if (this.state.password === this.state.confirmPassword) {
-            register(this.state.login, this.state.password, this.state.permissions);
+            register(this.state.username, this.state.password, this.state.permissions);
+
+            this.setState(state => {
+                state.login = undefined;
+                state.password = undefined;
+                state.confirmPassword = undefined;
+                state.permissions = 0;
+            });
         }
     }
 
     render() {
         return (
-            <div className="register-form">
-                <label>Login:</label>
-                <input id="username" placeholder="Login" onChange={this.handleLoginChange} required />
+            <form className="register-form">
+                <label>Username:</label>
+                <input id="username" placeholder="Username" onChange={this.handleLoginChange} required />
 
                 <label>Password:</label>
                 <input id="password" placeholder="Password" type="password" onChange={this.handlePasswordChange} required />
@@ -60,12 +68,12 @@ export class Register extends Component {
                 <label>Confirm Password:</label>
                 <input id="confirmPassword" placeholder="Confirm Password" type="password" onChange={this.handleConfirmChange} required />
 
-                <button onClick={this.registerUser}>Submit</button>
-
                 <label>
                     <input type="checkbox" name="permission" onClick={this.handlePermissionChange} /> Is user Admin
                 </label>
-            </div>
+
+                <button onClick={this.registerUser}>Submit</button>
+            </form>
         );
     }
 }
