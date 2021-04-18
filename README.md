@@ -10,6 +10,7 @@
 - Use SQL Server database with Entity Framework Core
 - Get database connection string from appsettings file
 - Create API controller with login and register features
+- Passwords should be at least hashed on backend
 - Controller shouldn't have any access to database
 - All interactions with database should be handled by service layer
 - Services should be injected using Microsoft.Extension.DependencyInjection
