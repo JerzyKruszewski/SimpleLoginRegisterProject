@@ -20,7 +20,7 @@ export class Register extends Component {
 
     handleLoginChange(event) {
         this.setState(state => {
-            state.login = event.target.value;
+            state.username = event.target.value;
         });
     }
 
@@ -37,8 +37,10 @@ export class Register extends Component {
     }
 
     handlePermissionChange(event) {
+        let nextValue = this.state.permissions === 0 ? 1 : 0; 
+
         this.setState(state => {
-            state.permissions === 0 ? state.permissions = 1 : state.permissions = 0;
+            state.permissions = nextValue;
         });
     }
 
@@ -48,9 +50,6 @@ export class Register extends Component {
             register(this.state.username, this.state.password, this.state.permissions);
 
             this.setState(state => {
-                state.login = undefined;
-                state.password = undefined;
-                state.confirmPassword = undefined;
                 state.permissions = 0;
             });
         }
@@ -69,7 +68,7 @@ export class Register extends Component {
                 <input id="confirmPassword" placeholder="Confirm Password" type="password" onChange={this.handleConfirmChange} required />
 
                 <label>
-                    <input type="checkbox" name="permission" onClick={this.handlePermissionChange} /> Is user Admin
+                    <input type="checkbox" name="permission" onChange={this.handlePermissionChange} /> Is user Admin
                 </label>
 
                 <button onClick={this.registerUser}>Submit</button>

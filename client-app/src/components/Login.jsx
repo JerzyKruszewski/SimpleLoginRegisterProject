@@ -30,15 +30,10 @@ export class Login extends Component {
     loginUser = async (event) => {
         event.preventDefault();
         const user = await this.getUser();
-        console.log(user);
 
         this.setState(state => {
             state.loggedUsername = user.login;
-            state.username = undefined;
-            state.password = undefined;
         });
-
-        console.log(this.state.loggedUsername);
 
         this.forceUpdate();
     }
