@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Login.Web.Data.Model;
+using Login.Web.Filters;
 using Login.Web.Services.Interfaces;
 using Login.Web.ViewModels;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
@@ -28,6 +29,7 @@ namespace Login.Web.Controller
 
         [HttpGet]
         [Route("login/{login}/{password}")]
+        [ApiKeyAuth]
         public ActionResult<User> Login(string login, string password)
         {
             User user = _service.GetUser(login).Result;
@@ -47,6 +49,7 @@ namespace Login.Web.Controller
 
         [HttpGet]
         [Route("getUser/{login}")]
+        [ApiKeyAuth]
         public ActionResult<User> GetUser(string login)
         {
             User user = _service.GetUser(login).Result;
@@ -61,6 +64,7 @@ namespace Login.Web.Controller
 
         [HttpPost]
         [Route("register")]
+        [ApiKeyAuth]
         public IActionResult Register(UserViewModel userViewModel)
         {
             if (_service.GetUser(userViewModel.Login).Result != null)

@@ -28,10 +28,9 @@ namespace Login.Web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
-
             services.AddScoped<IUserService, UserService>()
                 .AddDbContext<LoginDatabaseContext>(item => item.UseSqlServer(Configuration.GetConnectionString("Database")))
+                .AddCors()
                 .AddControllers();
         }
 
@@ -44,6 +43,7 @@ namespace Login.Web
             }
 
             app.UseRouting();
+
             app.UseCors(x => x
                 .AllowAnyMethod()
                 .AllowAnyHeader()
