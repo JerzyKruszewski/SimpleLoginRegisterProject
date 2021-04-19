@@ -1,7 +1,7 @@
 # SimpleLoginRegisterProject
 
 ## Warnings:
-**This project doesn't have any CSS.**
+**This project doesn't use any CSS.**
 
 **This project isn't by any means secure.**
 
