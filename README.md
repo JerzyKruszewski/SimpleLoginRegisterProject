@@ -7,7 +7,7 @@
 
 ## Project goals:
 - Build ASP.NET Core API from "empty" project ASP.NET Core
-- Use SQL Server database with Entity Framework Core
+- Use SQL Server database with Entity Framework Core (Code first)
 - Get database connection string from appsettings file
 - Create API controller with login and register features
 - Passwords should be at least hashed on backend
